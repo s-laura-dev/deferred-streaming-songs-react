@@ -25,9 +25,7 @@ export default async function PokeList({
     }
   );
   const data = await res.json();
-  deferred.next({ value: data.results, done: !data.next });
-
-  console.log("PokeList data:", data);
+  deferred.next({ value: { list: data.results }, done: !data.next });
 
   return (
     <div>
