@@ -4,7 +4,6 @@ import { Chunk } from "./types/Chunk";
 import { createDeferredGenerator } from "./utils/createDeferredGenerator";
 import Total from "./components/Total";
 
-//TODO: Make this component work with RSC import { Total } from "./components/Total";
 export const experimental_ppr = true;
 
 export default async function Home() {

@@ -7,7 +7,6 @@ export function createDeferredGenerator<
 >(): DeferredGenerator<TValue, TReturn> {
   let resolveQueue: (() => void) | null = null;
   const queue: Array<IteratorResult<TValue, TReturn>> = [];
-  let countPage = 0;
 
   const generator = async function* (): AsyncGenerator<TValue, TReturn> {
     while (true) {
@@ -29,8 +28,8 @@ export function createDeferredGenerator<
 
   const next = (chunk: { value: TValue | TReturn; done?: boolean }) => {
     console.log("Pushing to queue:", JSON.stringify(chunk));
-    countPage += 5;
-    if (chunk.done || countPage === 55) {
+
+    if (chunk.done) {
       queue.push({ done: true, value: chunk.value as TReturn });
     } else {
       queue.push({ done: false, value: chunk.value as TValue });

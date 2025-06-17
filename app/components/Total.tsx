@@ -3,6 +3,10 @@ import { Pokemon } from "../types/Pokemon";
 import { DeferredGenerator } from "../types/DeferredGenerator";
 import { Suspense } from "react";
 
+const TotalMessage = ({ pokeLength }: { pokeLength: number }) => {
+  return <p>Total Pokemons: {pokeLength}</p>;
+};
+
 async function TotalInner({
   deferred,
   pokemons = [],
@@ -19,11 +23,7 @@ async function TotalInner({
       // Stream the updated count in a single <p> and continue with next chunk
       return (
         <div>
-          <Suspense
-            fallback={
-              <p key="total-count">Total Pokemons: {pokemons.length}</p>
-            }
-          >
+          <Suspense fallback={<TotalMessage pokeLength={pokemons.length} />}>
             <TotalInner deferred={deferred} pokemons={pokemons} />
           </Suspense>
         </div>
@@ -32,7 +32,7 @@ async function TotalInner({
   }
 
   // Return the final count (or nothing if no new chunks)
-  return <p key="total-count">Total: {pokemons.length}</p>;
+  return <TotalMessage pokeLength={pokemons.length} />;
 }
 
 export default function Total({
@@ -42,7 +42,7 @@ export default function Total({
 }) {
   const pokemons: Pokemon[] = [];
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<TotalMessage pokeLength={pokemons.length} />}>
       <TotalInner deferred={deferred} pokemons={pokemons} />
     </Suspense>
   );
