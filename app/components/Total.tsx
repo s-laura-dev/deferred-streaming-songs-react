@@ -22,11 +22,11 @@ async function TotalInner({
       console.log("Pokemon Length: ", pokemons.length);
       // Stream the updated count in a single <p> and continue with next chunk
       return (
-        <div>
+        <>
           <Suspense fallback={<TotalMessage pokeLength={pokemons.length} />}>
             <TotalInner deferred={deferred} pokemons={pokemons} />
           </Suspense>
-        </div>
+        </>
       );
     }
   }

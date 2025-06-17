@@ -29,7 +29,7 @@ export default async function PokeList({
   deferred.next({ value: { list: data.results }, done: offset === 50 });
 
   return (
-    <div>
+    <>
       {data.results.map((pokemon: Pokemon) => (
         <PokeCard pokemon={pokemon} key={pokemon.name} />
       ))}
@@ -38,6 +38,6 @@ export default async function PokeList({
           <PokeList deferred={deferred} offset={offset + limit} limit={limit} />
         </Suspense>
       )}
-    </div>
+    </>
   );
 }
