@@ -7,9 +7,13 @@ export function generatorComponent<Props extends {}>(
     const result: React.ReactNode[] = [];
     const generator = generatorFn(props);
 
-    for await (const node of generator) {
-      console.log(node);
-      result.push(node);
+    try {
+      for await (const node of generator) {
+        result.push(node);
+      }
+    } catch (error) {
+      console.error("Generator failed:", error);
+      throw error;
     }
 
     return result;
