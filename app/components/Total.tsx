@@ -8,7 +8,7 @@ async function TotalInner({
   pokemons = [],
 }: {
   deferred: DeferredGenerator<Chunk, Chunk>;
-  pokemons: Pokemon[];
+  pokemons?: Pokemon[];
 }) {
   const iterator = deferred.generator();
 
@@ -16,11 +16,14 @@ async function TotalInner({
     if (chunk?.list && Array.isArray(chunk.list)) {
       pokemons.push(...chunk.list);
       console.log("Pokemon Length: ", pokemons.length);
-      // Stream each count immediately
+      // Stream the updated count in a single <p> and continue with next chunk
       return (
         <div>
-          <p key={pokemons.length}>{pokemons.length}</p>
-          <Suspense fallback={null}>
+          <Suspense
+            fallback={
+              <p key="total-count">Total Pokemons: {pokemons.length}</p>
+            }
+          >
             <TotalInner deferred={deferred} pokemons={pokemons} />
           </Suspense>
         </div>
@@ -28,7 +31,8 @@ async function TotalInner({
     }
   }
 
-  return null; // No more chunks
+  // Return the final count (or nothing if no new chunks)
+  return <p key="total-count">Total: {pokemons.length}</p>;
 }
 
 export default function Total({
