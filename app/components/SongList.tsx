@@ -1,10 +1,11 @@
-import PokeCard from "./SongCard";
 import sleep from "../utils/sleep";
 import { Suspense } from "react";
-import {  Song } from "../types/Pokemon";
+import { Song } from "../types/Song";
 import { Chunk } from "../types/Chunk";
 import { DeferredGenerator } from "../types/DeferredGenerator";
 import SongCard from "./SongCard";
+import SongListLoading from "./SongListLoading";
+import { maxOffset } from "../constants/settings";
 
 interface SongListProps {
   offset?: number;
@@ -18,7 +19,7 @@ export default async function SongList({
   deferred,
 }: SongListProps) {
   await sleep(1000);
-  if (offset > 50) return null;
+  if (offset + limit > maxOffset) return null;
   const res = await fetch(
     `https://api.deezer.com/chart/0/tracks?index=${offset}&limit=${limit}`,
     {
@@ -27,7 +28,10 @@ export default async function SongList({
   );
   const data = await res.json();
   console.log("Data fetched:", data);
-  deferred.next({ value: { list: data.data }, done: offset === 50 });
+  deferred.next({
+    value: { list: data.data },
+    done: offset === maxOffset - limit,
+  });
 
   return (
     <>
@@ -35,10 +39,13 @@ export default async function SongList({
         <SongCard song={song} key={song.id} />
       ))}
 
-        {/* <Suspense fallback={<div>Loading more...</div>}>
+      {
+        <Suspense
+          fallback={<SongListLoading items={maxOffset - offset - limit} />}
+        >
           <SongList deferred={deferred} offset={offset + limit} limit={limit} />
-        </Suspense> */}
-
+        </Suspense>
+      }
     </>
   );
 }

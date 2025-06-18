@@ -1,30 +1,30 @@
 import { Chunk } from "../types/Chunk";
-import { Song } from "../types/Pokemon";
+import { Song } from "../types/Song";
 import { DeferredGenerator } from "../types/DeferredGenerator";
 import { Suspense } from "react";
 
-const TotalMessage = ({ pokeLength }: { pokeLength: number }) => {
-  return <p>Total Pokemons: {pokeLength}</p>;
+const TotalMessage = ({ songsLength }: { songsLength: number }) => {
+  return <p className="m-3">Total Songs Fetched: {songsLength}</p>;
 };
 
 async function TotalInner({
   deferred,
-  pokemons = [],
+  songs = [],
 }: {
   deferred: DeferredGenerator<Chunk, Chunk>;
-  pokemons?: Song[];
+  songs?: Song[];
 }) {
   const iterator = deferred.generator();
 
   for await (const chunk of iterator) {
     if (chunk?.list && Array.isArray(chunk.list)) {
-      pokemons.push(...chunk.list);
-      console.log("Pokemon Length: ", pokemons.length);
+      songs.push(...chunk.list);
+      console.log("Songs Length: ", songs.length);
       // Stream the updated count in a single <p> and continue with next chunk
       return (
         <>
-          <Suspense fallback={<TotalMessage pokeLength={pokemons.length} />}>
-            <TotalInner deferred={deferred} pokemons={pokemons} />
+          <Suspense fallback={<TotalMessage songsLength={songs.length} />}>
+            <TotalInner deferred={deferred} songs={songs} />
           </Suspense>
         </>
       );
@@ -32,7 +32,7 @@ async function TotalInner({
   }
 
   // Return the final count (or nothing if no new chunks)
-  return <TotalMessage pokeLength={pokemons.length} />;
+  return <TotalMessage songsLength={songs.length} />;
 }
 
 export default function Total({
@@ -40,10 +40,10 @@ export default function Total({
 }: {
   deferred: DeferredGenerator<Chunk, Chunk>;
 }) {
-  const pokemons: Song[] = [];
+  const songs: Song[] = [];
   return (
-    <Suspense fallback={<TotalMessage pokeLength={pokemons.length} />}>
-      <TotalInner deferred={deferred} pokemons={pokemons} />
+    <Suspense fallback={<TotalMessage songsLength={songs.length} />}>
+      <TotalInner deferred={deferred} songs={songs} />
     </Suspense>
   );
 }
