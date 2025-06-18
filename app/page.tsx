@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import PokeList from "./components/PokeList";
 import { Chunk } from "./types/Chunk";
 import { createDeferredGenerator } from "./utils/createDeferredGenerator";
 import Total from "./components/Total";
+import SongList from "./components/SongList";
 
 export const experimental_ppr = true;
 
@@ -14,7 +14,7 @@ export default async function Home() {
       <Total deferred={deferred} />
 
       <Suspense fallback={<div>Loading data...</div>}>
-        <PokeList deferred={deferred} />
+        <SongList deferred={deferred} />
       </Suspense>
     </main>
   );

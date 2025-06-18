@@ -1,5 +1,5 @@
 import { Chunk } from "../types/Chunk";
-import { Pokemon } from "../types/Pokemon";
+import { Song } from "../types/Pokemon";
 import { DeferredGenerator } from "../types/DeferredGenerator";
 import { Suspense } from "react";
 
@@ -12,7 +12,7 @@ async function TotalInner({
   pokemons = [],
 }: {
   deferred: DeferredGenerator<Chunk, Chunk>;
-  pokemons?: Pokemon[];
+  pokemons?: Song[];
 }) {
   const iterator = deferred.generator();
 
@@ -40,7 +40,7 @@ export default function Total({
 }: {
   deferred: DeferredGenerator<Chunk, Chunk>;
 }) {
-  const pokemons: Pokemon[] = [];
+  const pokemons: Song[] = [];
   return (
     <Suspense fallback={<TotalMessage pokeLength={pokemons.length} />}>
       <TotalInner deferred={deferred} pokemons={pokemons} />

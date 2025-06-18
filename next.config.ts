@@ -4,6 +4,14 @@ const nextConfig: NextConfig = {
   experimental: {
     ppr: "incremental",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.deezer.com',
+      },
+    ],
+  },
   /* config options here */
 };
 
