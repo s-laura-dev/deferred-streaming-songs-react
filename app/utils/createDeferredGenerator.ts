@@ -19,15 +19,17 @@ export function createDeferredGenerator<
       const item = queue.shift();
       if (!item) continue;
       if (item.done) {
+        console.log("Generator done, returning value");
         return item.value;
       }
 
+      console.log("Yielding item");
       yield item.value;
     }
   };
 
   const next = (chunk: { value: TValue | TReturn; done?: boolean }) => {
-    console.log("Pushing to queue:", JSON.stringify(chunk));
+    console.log("Pushing to queue");
 
     if (chunk.done) {
       queue.push({ done: true, value: chunk.value as TReturn });
@@ -36,7 +38,6 @@ export function createDeferredGenerator<
     }
 
     if (resolveQueue) {
-      console.log("Resolving queue");
       resolveQueue();
       resolveQueue = null;
     } else {

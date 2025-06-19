@@ -1,1 +1,1 @@
-export const maxOffset = 50;
+export const maxOffset = 75;

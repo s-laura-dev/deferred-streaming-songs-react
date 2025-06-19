@@ -14,7 +14,6 @@ export default async function Home() {
   return (
     <main>
       <Total deferred={deferred} />
-
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-2">
         <Suspense fallback={<SongListLoading items={maxOffset} />}>
           <SongList deferred={deferred} />

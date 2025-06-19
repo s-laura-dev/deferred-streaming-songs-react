@@ -18,19 +18,24 @@ export default async function SongList({
   limit = 5,
   deferred,
 }: SongListProps) {
-  await sleep(1000);
-  if (offset + limit > maxOffset) return null;
+  await sleep(1250);
+
+  if (offset >= maxOffset) {
+    deferred.next({
+      value: { list: [] },
+      done: true,
+    });
+    return null;
+  }
+
   const res = await fetch(
-    `https://api.deezer.com/chart/0/tracks?index=${offset}&limit=${limit}`,
-    {
-      cache: "no-store",
-    }
+    `https://api.deezer.com/chart/0/tracks?index=${offset}&limit=${limit}`
   );
   const data = await res.json();
-  console.log("Data fetched:", data);
+
   deferred.next({
     value: { list: data.data },
-    done: offset === maxOffset - limit,
+    done: false,
   });
 
   return (

@@ -20,7 +20,7 @@ async function TotalInner({
     if (chunk?.list && Array.isArray(chunk.list)) {
       songs.push(...chunk.list);
       console.log("Songs Length: ", songs.length);
-      // Stream the updated count in a single <p> and continue with next chunk
+
       return (
         <>
           <Suspense fallback={<TotalMessage songsLength={songs.length} />}>
@@ -31,7 +31,7 @@ async function TotalInner({
     }
   }
 
-  // Return the final count (or nothing if no new chunks)
+  console.log("Final Songs Length: ", songs.length);
   return <TotalMessage songsLength={songs.length} />;
 }
 
